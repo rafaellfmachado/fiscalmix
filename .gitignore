@@ -1,0 +1,55 @@
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules/
+vendor/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build
+dist/
+build/
+*.min.js
+*.min.css
+
+# Laravel
+/backend/storage/*.key
+/backend/storage/framework/
+/backend/storage/logs/
+/backend/bootstrap/cache/
+/backend/public/storage
+/backend/public/hot
+
+# Docker
+docker-compose.override.yml
+
+# Testing
+coverage/
+.phpunit.result.cache
+cypress/videos/
+cypress/screenshots/
+
+# Temporary
+tmp/
+temp/
+*.tmp

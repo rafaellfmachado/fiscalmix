@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  # Backend Laravel
+  backend:
+    image: php:8.3-fpm-alpine
+    container_name: fiscalmix-backend
+    working_dir: /var/www
+    volumes:
+      - ./backend:/var/www
+    networks:
+      - fiscalmix
+    depends_on:
+      - postgres
+      - redis
+
+  # Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: fiscalmix-nginx
+    ports:
+      - "8000:80"
+      - "8080:8080"
+    volumes:
+      - ./backend:/var/www
+      - ./docker/nginx/backend.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend/dist:/var/www/frontend
+      - ./docker/nginx/frontend.conf:/etc/nginx/conf.d/frontend.conf
+    networks:
+      - fiscalmix
+    depends_on:
+      - backend
+
+  # PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: fiscalmix-postgres
+    environment:
+      POSTGRES_DB: fiscalmix
+      POSTGRES_USER: fiscalmix
+      POSTGRES_PASSWORD: fiscalmix_secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - fiscalmix
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    container_name: fiscalmix-redis
+    command: redis-server --requirepass fiscalmix_redis_secret
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - fiscalmix
+
+  # Frontend (Dev Server)
+  frontend:
+    image: node:20-alpine
+    container_name: fiscalmix-frontend
+    working_dir: /app
+    command: npm run dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - fiscalmix
+    environment:
+      - VITE_API_URL=http://localhost:8000/api
+
+networks:
+  fiscalmix:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  redis_data:
