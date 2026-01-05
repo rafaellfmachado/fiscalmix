@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,20 +29,23 @@ Route::middleware(['auth:sanctum', 'tenant'])->group(function () {
     Route::apiResource('companies', CompanyController::class);
 
     // Certificates
-    // Route::post('/companies/{company}/certificates/a1', [CertificateController::class, 'uploadA1']);
-    // Route::post('/companies/{company}/certificates/a3/pair', [CertificateController::class, 'pairA3']);
+    Route::prefix('companies/{company}')->group(function () {
+        Route::post('/certificates/a1', [CertificateController::class, 'uploadA1']);
+        Route::get('/certificates', [CertificateController::class, 'index']);
+        Route::delete('/certificates/{certificate}', [CertificateController::class, 'destroy']);
+    });
 
-    // Documents
+    // Documents (coming soon)
     // Route::get('/documents', [DocumentController::class, 'index']);
     // Route::get('/documents/{document}', [DocumentController::class, 'show']);
     // Route::get('/documents/{document}/xml', [DocumentController::class, 'downloadXml']);
     // Route::get('/documents/{document}/pdf', [DocumentController::class, 'downloadPdf']);
 
-    // Sync
+    // Sync (coming soon)
     // Route::post('/companies/{company}/sync', [SyncController::class, 'trigger']);
     // Route::get('/sync-runs/{syncRun}', [SyncController::class, 'show']);
 
-    // Exports
+    // Exports (coming soon)
     // Route::post('/exports', [ExportController::class, 'create']);
     // Route::get('/exports/{export}', [ExportController::class, 'show']);
     // Route::get('/exports/{export}/download', [ExportController::class, 'download']);
