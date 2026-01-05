@@ -19,7 +19,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Register tenant middleware alias
-        $this->app['router']->aliasMiddleware('tenant', \App\Http\Middleware\SetTenantContext::class);
+        //
     }
 }

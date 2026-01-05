@@ -2,71 +2,47 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, HasUuids, Notifiable;
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
     protected $fillable = [
-        'account_id',
         'name',
         'email',
         'password',
-        'mfa_enabled',
-        'mfa_secret',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
     protected $hidden = [
         'password',
         'remember_token',
-        'mfa_secret',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'mfa_enabled' => 'boolean',
-        'password' => 'hashed',
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-    ];
-
-    // Relationships
-    public function account(): BelongsTo
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
     {
-        return $this->belongsTo(Account::class);
-    }
-
-    public function companyPermissions(): HasMany
-    {
-        return $this->hasMany(CompanyUserPermission::class);
-    }
-
-    public function auditLogs(): HasMany
-    {
-        return $this->hasMany(AuditLog::class);
-    }
-
-    // Helpers
-    public function hasAccessToCompany(string $companyId): bool
-    {
-        return $this->companyPermissions()
-            ->where('company_id', $companyId)
-            ->exists();
-    }
-
-    public function getCompanyRole(string $companyId): ?string
-    {
-        $permission = $this->companyPermissions()
-            ->where('company_id', $companyId)
-            ->first();
-
-        return $permission?->role;
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }

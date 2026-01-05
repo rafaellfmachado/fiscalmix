@@ -1,35 +1,50 @@
 #!/bin/bash
 
-echo "🚀 FiscalMix - Setup Automático"
-echo "================================"
-echo ""
+echo "🔧 Configurando backend Laravel..."
 
-# Cores
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
-
-echo -e "${YELLOW}📦 Instalando dependências do backend...${NC}"
-docker-compose exec -T backend composer install --no-interaction --prefer-dist
-
-echo -e "${YELLOW}⚙️  Configurando .env...${NC}"
+# Copiar .env.example para .env
 docker-compose exec -T backend cp .env.example .env
+
+# Configurar database PostgreSQL no .env
+docker-compose exec -T backend sh -c "cat > .env << 'EOF'
+APP_NAME=FiscalMix
+APP_ENV=local
+APP_KEY=
+APP_DEBUG=true
+APP_URL=http://localhost:8001
+
+LOG_CHANNEL=stack
+
+DB_CONNECTION=pgsql
+DB_HOST=postgres
+DB_PORT=5432
+DB_DATABASE=fiscalmix
+DB_USERNAME=fiscalmix
+DB_PASSWORD=fiscalmix_secret
+
+CACHE_STORE=redis
+QUEUE_CONNECTION=redis
+SESSION_DRIVER=redis
+
+REDIS_CLIENT=predis
+REDIS_HOST=redis
+REDIS_PASSWORD=fiscalmix_redis_secret
+REDIS_PORT=6379
+
+SANCTUM_STATEFUL_DOMAINS=localhost:5173
+SPA_URL=http://localhost:5173
+EOF"
+
+# Gerar chave da aplicação
 docker-compose exec -T backend php artisan key:generate
 
-echo -e "${YELLOW}🗄️  Executando migrations...${NC}"
+# Executar migrations
+echo "📦 Executando migrations..."
 docker-compose exec -T backend php artisan migrate --force
 
+echo "✅ Backend configurado!"
 echo ""
-echo -e "${GREEN}✅ Backend configurado com sucesso!${NC}"
-echo ""
-echo "📍 Serviços disponíveis:"
-echo "   - Backend API: http://localhost:8001/api"
-echo "   - Frontend: http://localhost:5173"
+echo "🌐 Serviços:"
+echo "   - API: http://localhost:8001/api"
 echo "   - PostgreSQL: localhost:5434"
 echo "   - Redis: localhost:6382"
-echo ""
-echo "📝 Próximos passos:"
-echo "   1. cd frontend && npm install && npm run dev"
-echo "   2. Acesse http://localhost:5173"
-echo "   3. Crie uma conta em /register"
-echo ""

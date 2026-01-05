@@ -108,7 +108,7 @@ return new class extends Migration {
             $table->string('entity_type', 50)->nullable();
             $table->uuid('entity_id')->nullable();
             $table->jsonb('metadata')->default('{}');
-            $table->inet('ip_address')->nullable();
+            $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->timestamp('created_at')->useCurrent();
 
