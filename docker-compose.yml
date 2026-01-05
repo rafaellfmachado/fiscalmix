@@ -3,7 +3,9 @@ version: '3.8'
 services:
   # Backend Laravel
   backend:
-    image: php:8.3-fpm-alpine
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: fiscalmix-backend
     working_dir: /var/www
     volumes:

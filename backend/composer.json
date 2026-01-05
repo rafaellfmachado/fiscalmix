@@ -14,7 +14,6 @@
         "php": "^8.3",
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
-        "laravel/horizon": "^5.23",
         "aws/aws-sdk-php": "^3.300",
         "league/flysystem-aws-s3-v3": "^3.0",
         "predis/predis": "^2.2"
