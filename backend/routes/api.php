@@ -2,6 +2,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\CertificateController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\SyncController;
 use Illuminate\Support\Facades\Route;
 
@@ -49,8 +50,9 @@ Route::get('/documents/{document}', [DocumentController::class, 'show']);
 Route::get('/documents/{document}/xml', [DocumentController::class, 'downloadXml']);
 Route::get('/documents/{document}/pdf', [DocumentController::class, 'downloadPdf']);
 
-// Exports (coming soon)
-// Route::post('/exports', [ExportController::class, 'create']);
-// Route::get('/exports/{export}', [ExportController::class, 'show']);
-// Route::get('/exports/{export}/download', [ExportController::class, 'download']);
+// Exports
+Route::get('/exports', [ExportController::class, 'index']);
+Route::post('/exports', [ExportController::class, 'create']);
+Route::get('/exports/{export}', [ExportController::class, 'show']);
+Route::get('/exports/{export}/download', [ExportController::class, 'download']);
 });
