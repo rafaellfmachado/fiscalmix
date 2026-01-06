@@ -67,35 +67,34 @@ class AuthController extends Controller
     /**
      * Login user
      */
-    public function login(Request $request)
+    public function login(Request $request): JsonResponse
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
+        if (!Auth::attempt($credentials)) {
             throw ValidationException::withMessages([
                 'email' => ['As credenciais fornecidas estão incorretas.'],
             ]);
         }
 
+        $user = User::with('account')->find(Auth::id());
+
         // Check if account is active
-        if (!$user->account->isActive()) {
-            return response()->json([
-                'message' => 'Conta suspensa ou cancelada.',
-            ], 403);
+        if (!$user->account || !$user->account->isActive()) {
+            Auth::logout();
+            throw ValidationException::withMessages([
+                'email' => ['Sua conta está inativa.'],
+            ]);
         }
 
-        // Create token
         $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'expires_in' => 3600,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -104,11 +103,11 @@ class AuthController extends Controller
                     'id' => $user->account->id,
                     'name' => $user->account->name,
                     'plan' => $user->account->plan,
+                    'status' => $user->account->status,
                 ],
             ],
         ]);
     }
-
     /**
      * Logout user
      */
