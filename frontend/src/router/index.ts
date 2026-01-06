@@ -28,6 +28,18 @@ const router = createRouter({
             component: () => import('@/views/companies/CompaniesView.vue'),
             meta: { requiresAuth: true }
         },
+        {
+            path: '/documents',
+            name: 'documents',
+            component: () => import('@/views/documents/DocumentsView.vue'),
+            meta: { requiresAuth: true }
+        },
+        {
+            path: '/sync',
+            name: 'sync',
+            component: () => import('@/views/sync/SyncView.vue'),
+            meta: { requiresAuth: true }
+        },
     ]
 })
 
