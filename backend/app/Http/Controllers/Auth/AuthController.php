@@ -82,7 +82,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $user = User::with('account')->find(Auth::id());
+        $user = Auth::user()->load('account');
 
         // Check if account is active
         if (!$user->account || !$user->account->isActive()) {
