@@ -18,27 +18,36 @@ const router = createRouter({
         },
         {
             path: '/',
-            name: 'dashboard',
-            component: () => import('@/views/DashboardView.vue'),
-            meta: { requiresAuth: true }
-        },
-        {
-            path: '/companies',
-            name: 'companies',
-            component: () => import('@/views/companies/CompaniesView.vue'),
-            meta: { requiresAuth: true }
-        },
-        {
-            path: '/documents',
-            name: 'documents',
-            component: () => import('@/views/documents/DocumentsView.vue'),
-            meta: { requiresAuth: true }
-        },
-        {
-            path: '/sync',
-            name: 'sync',
-            component: () => import('@/views/sync/SyncView.vue'),
-            meta: { requiresAuth: true }
+            component: () => import('@/layouts/MainLayout.vue'),
+            meta: { requiresAuth: true },
+            children: [
+                {
+                    path: '',
+                    name: 'dashboard',
+                    component: () => import('@/views/DashboardView.vue'),
+                },
+                {
+                    path: '/companies',
+                    name: 'companies',
+                    component: () => import('@/views/companies/CompaniesView.vue'),
+                },
+                {
+                    path: '/documents',
+                    name: 'documents',
+                    component: () => import('@/views/documents/DocumentsView.vue'),
+                },
+                {
+                    path: '/sync',
+                    name: 'sync',
+                    component: () => import('@/views/sync/SyncView.vue'),
+                },
+                {
+                    path: '/admin',
+                    name: 'admin',
+                    component: () => import('@/views/admin/AdminView.vue'),
+                    meta: { requiresAdmin: true }
+                },
+            ]
         },
     ]
 })
