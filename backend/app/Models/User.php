@@ -48,4 +48,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the account that owns the user.
+     */
+    public function account()
+    {
+        return $this->belongsTo(Account::class);
+    }
 }
