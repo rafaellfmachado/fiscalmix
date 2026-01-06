@@ -14,6 +14,7 @@ import 'primeicons/primeicons.css'
 
 // Custom CSS
 import './assets/main.css'
+import './assets/toast.css'
 
 const app = createApp(App)
 

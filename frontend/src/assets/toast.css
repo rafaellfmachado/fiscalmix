@@ -1,0 +1,107 @@
+/* Custom Toast Styles - Premium Design */
+:root {
+    --toast-success: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    --toast-error: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+    --toast-info: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+    --toast-warning: linear-gradient(135deg, #ed8936 0%, #dd6b20 100%);
+}
+
+/* Override PrimeVue Toast */
+.p-toast {
+    opacity: 1 !important;
+}
+
+.p-toast .p-toast-message {
+    margin: 0 0 1rem 0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    border: none;
+    backdrop-filter: blur(10px);
+    animation: slideInRight 0.3s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.p-toast .p-toast-message.p-toast-message-success {
+    background: var(--toast-success);
+    color: white;
+}
+
+.p-toast .p-toast-message.p-toast-message-error {
+    background: var(--toast-error);
+    color: white;
+}
+
+.p-toast .p-toast-message.p-toast-message-info {
+    background: var(--toast-info);
+    color: white;
+}
+
+.p-toast .p-toast-message.p-toast-message-warn {
+    background: var(--toast-warning);
+    color: white;
+}
+
+.p-toast .p-toast-message .p-toast-message-content {
+    padding: 1.25rem;
+    border: none;
+}
+
+.p-toast .p-toast-message .p-toast-message-icon {
+    font-size: 2rem;
+    color: white;
+}
+
+.p-toast .p-toast-message .p-toast-message-text {
+    margin: 0 0 0 1rem;
+}
+
+.p-toast .p-toast-message .p-toast-summary {
+    font-weight: 700;
+    font-size: 1rem;
+    color: white;
+    margin-bottom: 0.25rem;
+}
+
+.p-toast .p-toast-message .p-toast-detail {
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.95);
+    margin: 0;
+}
+
+.p-toast .p-toast-message .p-toast-icon-close {
+    color: white;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.p-toast .p-toast-message .p-toast-icon-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.p-toast .p-toast-message .p-toast-icon-close-icon {
+    font-size: 1rem;
+    color: white;
+}
+
+/* Remove default borders and backgrounds */
+.p-toast .p-toast-message.p-toast-message-success .p-toast-message-content,
+.p-toast .p-toast-message.p-toast-message-error .p-toast-message-content,
+.p-toast .p-toast-message.p-toast-message-info .p-toast-message-content,
+.p-toast .p-toast-message.p-toast-message-warn .p-toast-message-content {
+    border: none;
+    background: transparent;
+}

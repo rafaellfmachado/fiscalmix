@@ -43,12 +43,23 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // TODO: Send email verification
+        // Create token for auto-login
+        $token = $user->createToken('auth-token')->plainTextToken;
 
         return response()->json([
-            'message' => 'Conta criada com sucesso! Verifique seu e-mail.',
-            'user' => $user->only(['id', 'name', 'email']),
-            'account' => $account->only(['id', 'name', 'plan']),
+            'message' => 'Conta criada com sucesso!',
+            'access_token' => $token,
+            'token_type' => 'Bearer',
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'account' => [
+                    'id' => $account->id,
+                    'name' => $account->name,
+                    'plan' => $account->plan,
+                ],
+            ],
         ], 201);
     }
 
